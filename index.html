@@ -1,0 +1,275 @@
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Chúc Mừng Năm Mới 🎉</title>
+
+  <style>
+    :root{
+      color-scheme: light;
+      --green-main:#1f7a3f;
+      --green-light:#2ecc71;
+      --green-soft:#e9f7ef;
+    }
+
+    body{
+      margin:0;
+      min-height:100vh;
+      display:grid;
+      place-items:center;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: radial-gradient(circle at top, #ffe9a8, #ffb6c1, #8fd3ff);
+      overflow:hidden;
+    }
+
+    .card{
+      width:min(760px, 92vw);
+      text-align:center;
+      padding:34px 26px;
+      border-radius:24px;
+      background: rgba(233, 247, 239, 0.86);
+      backdrop-filter: blur(12px);
+      box-shadow: 0 20px 45px rgba(0,0,0,.18);
+      border: 1px solid rgba(46, 204, 113, 0.25);
+    }
+
+    h1{
+      margin:0 0 10px;
+      font-size: clamp(28px, 5vw, 44px);
+      color: var(--green-main);
+      letter-spacing: .2px;
+    }
+
+    #nameTag{
+      display:inline-block;
+      margin: 6px 0 14px;
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: rgba(46, 204, 113, 0.14);
+      border: 1px solid rgba(46, 204, 113, 0.25);
+      color: #205f37;
+      font-weight: 650;
+      font-size: 14px;
+    }
+
+    p{
+      margin:0 0 18px;
+      font-size: clamp(16px, 2.35vw, 20px);
+      line-height:1.55;
+      color:#2d5f3a;
+    }
+
+    .row{
+      display:flex;
+      gap:12px;
+      justify-content:center;
+      flex-wrap:wrap;
+      margin-top:10px;
+    }
+
+    button{
+      border:0;
+      border-radius:999px;
+      padding:12px 18px;
+      font-weight:650;
+      cursor:pointer;
+      transition: transform .18s ease, filter .18s ease;
+      user-select:none;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    .primary{
+      background: linear-gradient(135deg, var(--green-main), var(--green-light));
+      color:#fff;
+      box-shadow: 0 10px 22px rgba(31,122,63,.35);
+    }
+    .primary:hover{ transform: translateY(-2px); }
+
+    .ghost{
+      background: rgba(255,255,255,.92);
+      color: var(--green-main);
+      border: 1px solid rgba(46, 204, 113, 0.55);
+    }
+    .ghost:hover{ transform: translateY(-2px); }
+
+    .small{
+      margin-top:16px;
+      font-size:14px;
+      color:#4a7c59;
+      opacity:.95;
+    }
+
+    /* =========================
+       CONFETTI (nhiều + đẹp hơn)
+       ========================= */
+    .confetti{
+      position: fixed;
+      top: -14px;
+      pointer-events: none;
+      z-index: 9999;
+      will-change: transform, opacity;
+      animation-name: confetti-fall;
+      animation-timing-function: linear;
+      animation-fill-mode: forwards;
+      opacity: .95;
+      filter: drop-shadow(0 0 10px rgba(255,255,255,.28));
+    }
+
+    /* 2 kiểu: giấy & hạt tròn */
+    .confetti.paper{
+      border-radius: 3px;
+    }
+    .confetti.dot{
+      border-radius: 999px;
+    }
+
+    @keyframes confetti-fall{
+      0%   { transform: translate3d(var(--x), -30px, 0) rotate(0deg); opacity: 1; }
+      100% { transform: translate3d(calc(var(--x) + var(--drift)), 115vh, 0) rotate(var(--rot)); opacity: 0; }
+    }
+  </style>
+</head>
+
+<body>
+  <main class="card">
+    <h1>🎊 Chúc Mừng Năm Mới! 🎊</h1>
+
+    <div id="nameTag">Gửi bạn</div>
+
+    <p id="msg">
+      Chúc bạn một năm mới thật nhiều sức khỏe, niềm vui và những điều tốt đẹp! ✨
+    </p>
+
+    <div class="row">
+      <button class="primary" id="btnConfetti">Bắn pháo giấy 🎉</button>
+      <button class="ghost" id="btnWish">Hãy nhấn nếu không đúng tên</button>
+    </div>
+
+    <div class="small">
+      Mùng 1 Tết Đoan Ngọ <b id="year"></b> • Made with IT0010
+    </div>
+  </main>
+
+  <script>
+    // =========================
+    // 1) Lời chúc theo từng người
+    // =========================
+    const wishesByName = {
+      "Anh Xuân Chiến": "Chúc anh Chiến năm mới bứt phá mạnh mẽ, đạt mọi mục tiêu!",
+      "Chị Hồng Ngọc": "Chúc chị Hồng Ngọc năm mới luôn tỏa sáng và hạnh phúc!",
+      "Mai Phương": "Chúc Mai Phương một năm mới nhẹ nhàng, an nhiên và tràn đầy may mắn!",
+      "Phương Nam": "Chúc Phương Nam năm mới đi lèm!",
+      "Như Ngọc": "Chúc Như Ngọc năm mới hạnh phúc và luôn được yêu thương!",
+      "Nguyên Phương": "Chúc Nguyên Phương năm mới đầy cảm hứng, sáng tạo và nhiều cơ hội lớn!",
+      "Ngọc Trinh": "Chúc Ngọc Trinh năm mới tự tin và đạt nhiều thành tựu đáng tự hào!",
+      "Kỳ Duyên": "Chúc Kỳ Duyên năm mới nhiều duyên lành, thành công và niềm vui bất tận!",
+      "Châu Anh": "Chúc Châu Anh năm mới tràn đầy năng lượng tích cực và những điều bất ngờ thú vị!",
+      "Phương Uyên": "Chúc Phương Uyên năm mới bình an, học tập/làm việc thuận lợi và luôn mỉm cười!",
+      "Phương Anh": "Chúc Phương Anh năm mới bứt phá giới hạn và đạt được mọi điều mong muốn!",
+      "Anh Khoa": "Chúc Anh Khoa năm mới thành công rực rỡ và luôn vững bước phía trước!",
+      "Khánh Linh": "Chúc Khánh Linh năm mới ngập tràn yêu thương và thật nhiều cơ hội tốt đẹp!",
+      "Cẩm Nhung": "Chúc Cẩm Nhung năm mới rạng rỡ, tự tin và đạt được mọi mục tiêu đề ra!",
+      "Tam Thiện": "Chúc Tam Thiện năm mới hạnh phúc và nhiều thành tựu đáng tự hào!",
+      "Như Anh": "Chúc Như Anh năm mới nhẹ nhàng, may mắn và luôn được yêu thương!",
+      "Minh Trí": "Chúc Minh Trí năm mới sáng suốt, bản lĩnh và thành công vượt mong đợi!",
+      "Ngọc Khánh": "Chúc Ngọc Khánh năm mới bình an, mạnh khỏe và vạn sự như ý!",
+      "Quốc Việt": "Chúc Quốc Việt năm mới nhiều cơ hội lớn và thành công vang dội!",
+      "Thanh Phương": "Chúc Thanh Phương năm mới hạnh phúc trọn vẹn và nhiều điều tốt đẹp!",
+      "Yến Thu": "Chúc Yến Thu năm mới may mắn và luôn giữ được nụ cười!",
+      "Phương Danh": "Chúc Phương Danh năm mới thành công và luôn tràn đầy năng lượng!",
+      "Thiện Nhân": "Chúc Thiện Nhân năm mới bình an và nhiều thành tựu rực rỡ!",
+      "Minh Thư": "Chúc Minh Thư năm mới nhẹ nhàng và nhiều điều bất ngờ thú vị!",
+      "Minh Hy": "Chúc Minh Hy năm mới ngập tràn cơ hội và hạnh phúc!",
+      "Chị Diễn Heo": "新年快乐，万事如意！"
+    };
+
+    const names = Object.keys(wishesByName);
+    const msgEl = document.getElementById("msg");
+    const nameTagEl = document.getElementById("nameTag");
+    const btnWish = document.getElementById("btnWish");
+    const btnConfetti = document.getElementById("btnConfetti");
+
+    const params = new URLSearchParams(window.location.search);
+    const nameFromURL = params.get("name");
+
+    function pickRandomName(){
+      return names[Math.floor(Math.random() * names.length)];
+    }
+
+    function showWish(name){
+      const finalName = wishesByName[name] ? name : pickRandomName();
+      nameTagEl.textContent = "Gửi " + finalName;
+      msgEl.textContent = wishesByName[finalName];
+    }
+
+    showWish(nameFromURL);
+    btnWish.addEventListener("click", () => showWish(pickRandomName()));
+
+    // =========================
+    // 2) CONFETTI: nhiều hơn + burst
+    // =========================
+    function spawnConfetti(count = 260){
+      // tăng trần để bắn nhiều hơn
+      const maxOnScreen = 1800;
+      const current = document.querySelectorAll(".confetti").length;
+      if (current > maxOnScreen) return;
+
+      for (let i = 0; i < count; i++){
+        const c = document.createElement("div");
+
+        // 2 kiểu hạt: giấy (70%) & tròn (30%)
+        const isDot = Math.random() < 0.3;
+        c.className = "confetti " + (isDot ? "dot" : "paper");
+
+        // vị trí ngang
+        c.style.left = (Math.random() * 100) + "vw";
+
+        // biến dùng cho animation
+        c.style.setProperty("--x", (Math.random() * 100) + "vw");
+        c.style.setProperty("--drift", ((Math.random() * 2 - 1) * 28) + "vw");
+        c.style.setProperty("--rot", (Math.random() * 1080 - 540) + "deg");
+
+        // màu
+        c.style.background = `hsl(${Math.floor(Math.random() * 360)}, 92%, 60%)`;
+
+        // thời gian rơi + delay
+        const dur = 2.0 + Math.random() * 2.8;   // 2.0 - 4.8s
+        const delay = Math.random() * 0.18;      // 0 - 0.18s
+        c.style.animationDuration = dur + "s";
+        c.style.animationDelay = delay + "s";
+
+        // kích thước
+        if (isDot){
+          const s = 5 + Math.random() * 8; // 5-13
+          c.style.width = s + "px";
+          c.style.height = s + "px";
+        } else {
+          const w = 6 + Math.random() * 10; // 6-16
+          const h = 10 + Math.random() * 14; // 10-24
+          c.style.width = w + "px";
+          c.style.height = h + "px";
+        }
+
+        document.body.appendChild(c);
+        c.addEventListener("animationend", () => c.remove());
+      }
+    }
+
+    // bắn theo 3 đợt để “nổ” mạnh
+    function bigBurst(){
+      spawnConfetti(320);
+      setTimeout(() => spawnConfetti(320), 120);
+      setTimeout(() => spawnConfetti(320), 240);
+    }
+
+    btnConfetti.addEventListener("click", bigBurst);
+
+    // nổ nhẹ khi mở trang (nhưng vẫn nhiều hơn trước)
+    spawnConfetti(220);
+
+    // Năm hiện tại
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
