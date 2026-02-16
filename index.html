@@ -100,9 +100,7 @@
       opacity:.95;
     }
 
-    /* =========================
-       CONFETTI (nhiều + đẹp hơn)
-       ========================= */
+    /* Confetti */
     .confetti{
       position: fixed;
       top: -14px;
@@ -115,14 +113,8 @@
       opacity: .95;
       filter: drop-shadow(0 0 10px rgba(255,255,255,.28));
     }
-
-    /* 2 kiểu: giấy & hạt tròn */
-    .confetti.paper{
-      border-radius: 3px;
-    }
-    .confetti.dot{
-      border-radius: 999px;
-    }
+    .confetti.paper{ border-radius: 3px; }
+    .confetti.dot{ border-radius: 999px; }
 
     @keyframes confetti-fall{
       0%   { transform: translate3d(var(--x), -30px, 0) rotate(0deg); opacity: 1; }
@@ -142,24 +134,22 @@
     </p>
 
     <div class="row">
-      <button class="primary" id="btnConfetti">Bắn pháo giấy 🎉</button>
-      <button class="ghost" id="btnWish">Hãy nhấn nếu không đúng tên</button>
+      <button class="primary" id="btnConfetti">Bắn pháo giấy</button>
+      <button class="ghost" id="btnWish">Ấn nút nếu chưa đúng tên</button>
     </div>
 
     <div class="small">
-      Mùng 1 Tết Đoan Ngọ <b id="year"></b> • Made with IT0010
+      Mùng 1 Tết Đoan Ngọ <b id="year"></b> • Made with IT0212
     </div>
   </main>
 
   <script>
-    // =========================
-    // 1) Lời chúc theo từng người
-    // =========================
+    // Lời chúc theo từng người
     const wishesByName = {
       "Anh Xuân Chiến": "Chúc anh Chiến năm mới bứt phá mạnh mẽ, đạt mọi mục tiêu!",
-      "Chị Hồng Ngọc": "Chúc chị Hồng Ngọc năm mới luôn tỏa sáng và hạnh phúc!",
-      "Mai Phương": "Chúc Mai Phương một năm mới nhẹ nhàng, an nhiên và tràn đầy may mắn!",
-      "Phương Nam": "Chúc Phương Nam năm mới đi lèm!",
+      "Chị Hồng Ngọc": "Chúc chị Hồng Ngọc năm mới luôn tỏa sáng, hạnh phúc và dìu dắt CLB!",
+      "Mai Phương": "Chúc Mai Phương chạy thêm 10 chương trình với CLB",
+      "Phương Nam": "Chúc Phương Nam IELTS 8.0!",
       "Như Ngọc": "Chúc Như Ngọc năm mới hạnh phúc và luôn được yêu thương!",
       "Nguyên Phương": "Chúc Nguyên Phương năm mới đầy cảm hứng, sáng tạo và nhiều cơ hội lớn!",
       "Ngọc Trinh": "Chúc Ngọc Trinh năm mới tự tin và đạt nhiều thành tựu đáng tự hào!",
@@ -201,52 +191,38 @@
       const finalName = wishesByName[name] ? name : pickRandomName();
       nameTagEl.textContent = "Gửi " + finalName;
       msgEl.textContent = wishesByName[finalName];
+      return finalName;
     }
 
-    showWish(nameFromURL);
-    btnWish.addEventListener("click", () => showWish(pickRandomName()));
-
-    // =========================
-    // 2) CONFETTI: nhiều hơn + burst
-    // =========================
-    function spawnConfetti(count = 260){
-      // tăng trần để bắn nhiều hơn
-      const maxOnScreen = 1800;
+    // --- Confetti: nhiều + burst ---
+    function spawnConfetti(count = 320){
+      const maxOnScreen = 2200;
       const current = document.querySelectorAll(".confetti").length;
       if (current > maxOnScreen) return;
 
       for (let i = 0; i < count; i++){
         const c = document.createElement("div");
-
-        // 2 kiểu hạt: giấy (70%) & tròn (30%)
-        const isDot = Math.random() < 0.3;
+        const isDot = Math.random() < 0.33;
         c.className = "confetti " + (isDot ? "dot" : "paper");
 
-        // vị trí ngang
         c.style.left = (Math.random() * 100) + "vw";
-
-        // biến dùng cho animation
         c.style.setProperty("--x", (Math.random() * 100) + "vw");
-        c.style.setProperty("--drift", ((Math.random() * 2 - 1) * 28) + "vw");
-        c.style.setProperty("--rot", (Math.random() * 1080 - 540) + "deg");
-
-        // màu
+        c.style.setProperty("--drift", ((Math.random() * 2 - 1) * 30) + "vw");
+        c.style.setProperty("--rot", (Math.random() * 1200 - 600) + "deg");
         c.style.background = `hsl(${Math.floor(Math.random() * 360)}, 92%, 60%)`;
 
-        // thời gian rơi + delay
-        const dur = 2.0 + Math.random() * 2.8;   // 2.0 - 4.8s
+        const dur = 2.0 + Math.random() * 3.0;   // 2.0 - 5.0s
         const delay = Math.random() * 0.18;      // 0 - 0.18s
         c.style.animationDuration = dur + "s";
         c.style.animationDelay = delay + "s";
 
-        // kích thước
         if (isDot){
-          const s = 5 + Math.random() * 8; // 5-13
+          const s = 5 + Math.random() * 9; // 5-14
           c.style.width = s + "px";
           c.style.height = s + "px";
         } else {
-          const w = 6 + Math.random() * 10; // 6-16
-          const h = 10 + Math.random() * 14; // 10-24
+          const w = 6 + Math.random() * 12; // 6-18
+          const h = 10 + Math.random() * 16; // 10-26
           c.style.width = w + "px";
           c.style.height = h + "px";
         }
@@ -256,17 +232,38 @@
       }
     }
 
-    // bắn theo 3 đợt để “nổ” mạnh
     function bigBurst(){
-      spawnConfetti(320);
-      setTimeout(() => spawnConfetti(320), 120);
-      setTimeout(() => spawnConfetti(320), 240);
+      spawnConfetti(420);
+      setTimeout(() => spawnConfetti(420), 120);
+      setTimeout(() => spawnConfetti(420), 240);
+      setTimeout(() => spawnConfetti(420), 360);
     }
 
+    // Hiển thị ban đầu
+    showWish(nameFromURL);
+
+    // Bắn pháo giấy thủ công
     btnConfetti.addEventListener("click", bigBurst);
 
-    // nổ nhẹ khi mở trang (nhưng vẫn nhiều hơn trước)
-    spawnConfetti(220);
+    // ✅ Khi bấm “chưa đúng tên”: đổi tên -> đợi 2s -> bắn pháo hoa
+    let pendingTimer = null;
+    btnWish.textContent = "Ấn nút nếu chưa đúng tên";
+    btnWish.addEventListener("click", () => {
+      // đổi tên + lời chúc
+      showWish(pickRandomName());
+
+      // nếu bấm liên tục thì hủy timer cũ để tránh bắn chồng loạn
+      if (pendingTimer) clearTimeout(pendingTimer);
+
+      // chờ 2 giây rồi bắn
+      pendingTimer = setTimeout(() => {
+        bigBurst();
+        pendingTimer = null;
+      }, 2000);
+    });
+
+    // Nổ nhẹ khi mở trang
+    spawnConfetti(280);
 
     // Năm hiện tại
     document.getElementById("year").textContent = new Date().getFullYear();
