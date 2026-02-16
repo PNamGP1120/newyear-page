@@ -2,7 +2,7 @@
 <html lang="vi">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
   <title>Chúc Mừng Năm Mới 🎉</title>
 
   <style>
@@ -11,23 +11,27 @@
       --green-main:#1f7a3f;
       --green-light:#2ecc71;
       --green-soft:#e9f7ef;
+      --text:#2d5f3a;
     }
+
+    *{ box-sizing: border-box; }
 
     body{
       margin:0;
-      min-height:100vh;
+      min-height:100svh; /* mobile safe */
       display:grid;
       place-items:center;
+      padding: 18px;     /* chống sát viền trên mobile */
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
       background: radial-gradient(circle at top, #ffe9a8, #ffb6c1, #8fd3ff);
       overflow:hidden;
     }
 
     .card{
-      width:min(760px, 92vw);
+      width: min(780px, 100%);
       text-align:center;
-      padding:34px 26px;
-      border-radius:24px;
+      padding: clamp(18px, 4vw, 34px);
+      border-radius: 22px;
       background: rgba(233, 247, 239, 0.86);
       backdrop-filter: blur(12px);
       box-shadow: 0 20px 45px rgba(0,0,0,.18);
@@ -36,28 +40,37 @@
 
     h1{
       margin:0 0 10px;
-      font-size: clamp(28px, 5vw, 44px);
+      font-size: clamp(22px, 5.2vw, 44px);
       color: var(--green-main);
       letter-spacing: .2px;
+      line-height: 1.15;
     }
 
     #nameTag{
-      display:inline-block;
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      gap:8px;
       margin: 6px 0 14px;
       padding: 8px 12px;
       border-radius: 999px;
       background: rgba(46, 204, 113, 0.14);
       border: 1px solid rgba(46, 204, 113, 0.25);
       color: #205f37;
-      font-weight: 650;
+      font-weight: 700;
       font-size: 14px;
+      max-width: 100%;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis; /* tên dài vẫn đẹp */
     }
 
-    p{
+    #msg{
       margin:0 0 18px;
-      font-size: clamp(16px, 2.35vw, 20px);
+      font-size: clamp(15px, 2.5vw, 20px);
       line-height:1.55;
-      color:#2d5f3a;
+      color: var(--text);
+      word-break: break-word;
     }
 
     .row{
@@ -65,18 +78,22 @@
       gap:12px;
       justify-content:center;
       flex-wrap:wrap;
-      margin-top:10px;
+      margin-top:12px;
     }
 
     button{
       border:0;
       border-radius:999px;
-      padding:12px 18px;
-      font-weight:650;
+      padding: 12px 16px;
+      font-weight: 750;
       cursor:pointer;
       transition: transform .18s ease, filter .18s ease;
       user-select:none;
       -webkit-tap-highlight-color: transparent;
+      min-height: 44px; /* chuẩn chạm mobile */
+      font-size: 15px;
+      flex: 1 1 220px;  /* responsive: 2 nút có thể xếp hàng */
+      max-width: 320px;
     }
 
     .primary{
@@ -84,20 +101,27 @@
       color:#fff;
       box-shadow: 0 10px 22px rgba(31,122,63,.35);
     }
-    .primary:hover{ transform: translateY(-2px); }
-
     .ghost{
-      background: rgba(255,255,255,.92);
+      background: rgba(255,255,255,.94);
       color: var(--green-main);
       border: 1px solid rgba(46, 204, 113, 0.55);
     }
-    .ghost:hover{ transform: translateY(-2px); }
+
+    button:active{ transform: translateY(1px) scale(.99); }
+    button:hover{ transform: translateY(-2px); }
 
     .small{
       margin-top:16px;
-      font-size:14px;
+      font-size: 13px;
       color:#4a7c59;
       opacity:.95;
+      line-height: 1.4;
+    }
+
+    /* Mobile tweaks */
+    @media (max-width: 420px){
+      button{ flex-basis: 100%; max-width: 100%; }
+      .small{ font-size: 12.5px; }
     }
 
     /* Confetti */
@@ -120,22 +144,26 @@
       0%   { transform: translate3d(var(--x), -30px, 0) rotate(0deg); opacity: 1; }
       100% { transform: translate3d(calc(var(--x) + var(--drift)), 115vh, 0) rotate(var(--rot)); opacity: 0; }
     }
+
+    /* Reduce motion support */
+    @media (prefers-reduced-motion: reduce){
+      .confetti{ display:none; }
+      button{ transition:none; }
+    }
   </style>
 </head>
 
 <body>
-  <main class="card">
+  <main class="card" role="main">
     <h1>🎊 Chúc Mừng Năm Mới! 🎊</h1>
 
-    <div id="nameTag">Gửi bạn</div>
+    <div id="nameTag" title="Tên theo link">Gửi bạn</div>
 
-    <p id="msg">
-      Chúc bạn một năm mới thật nhiều sức khỏe, niềm vui và những điều tốt đẹp! ✨
-    </p>
+    <p id="msg">Chúc bạn một năm mới thật nhiều sức khỏe, niềm vui và những điều tốt đẹp! ✨</p>
 
     <div class="row">
-      <button class="primary" id="btnConfetti">Bắn pháo giấy</button>
-      <button class="ghost" id="btnWish">Ấn nút nếu chưa đúng tên</button>
+      <button class="primary" id="btnConfetti" type="button">Bắn pháo giấy 🎉</button>
+      <button class="ghost" id="btnWish" type="button">Ấn nút nếu chưa đúng tên</button>
     </div>
 
     <div class="small">
@@ -144,11 +172,10 @@
   </main>
 
   <script>
-    // Lời chúc theo từng người
     const wishesByName = {
       "Anh Xuân Chiến": "Chúc anh Chiến năm mới bứt phá mạnh mẽ, đạt mọi mục tiêu!",
       "Chị Hồng Ngọc": "Chúc chị Hồng Ngọc năm mới luôn tỏa sáng, hạnh phúc và dìu dắt CLB!",
-      "Mai Phương": "Chúc Mai Phương chạy thêm 10 chương trình với CLB",
+      "Mai Phương": "Chúc Mai Phương chạy thêm 10+ chương trình với CLB",
       "Phương Nam": "Chúc Phương Nam IELTS 8.0!",
       "Như Ngọc": "Chúc Như Ngọc năm mới hạnh phúc và luôn được yêu thương!",
       "Nguyên Phương": "Chúc Nguyên Phương năm mới đầy cảm hứng, sáng tạo và nhiều cơ hội lớn!",
@@ -175,32 +202,47 @@
     };
 
     const names = Object.keys(wishesByName);
+
     const msgEl = document.getElementById("msg");
     const nameTagEl = document.getElementById("nameTag");
     const btnWish = document.getElementById("btnWish");
     const btnConfetti = document.getElementById("btnConfetti");
 
+    // ====== Lấy tên từ URL ?name= ======
     const params = new URLSearchParams(window.location.search);
     const nameFromURL = params.get("name");
 
-    function pickRandomName(){
-      return names[Math.floor(Math.random() * names.length)];
+    function pickRandomName(except){
+      if (names.length <= 1) return names[0];
+      let n = names[Math.floor(Math.random() * names.length)];
+      while (n === except) n = names[Math.floor(Math.random() * names.length)];
+      return n;
     }
 
+    let currentName = "";
+
     function showWish(name){
-      const finalName = wishesByName[name] ? name : pickRandomName();
+      const finalName = wishesByName[name] ? name : pickRandomName("");
+      currentName = finalName;
       nameTagEl.textContent = "Gửi " + finalName;
+      nameTagEl.title = finalName;
       msgEl.textContent = wishesByName[finalName];
       return finalName;
     }
 
-    // --- Confetti: nhiều + burst ---
+    // =========================
+    // Confetti: nhiều + burst
+    // =========================
     function spawnConfetti(count = 320){
-      const maxOnScreen = 2200;
+      const maxOnScreen = 2400;
       const current = document.querySelectorAll(".confetti").length;
       if (current > maxOnScreen) return;
 
-      for (let i = 0; i < count; i++){
+      // tự giảm số lượng trên máy yếu (màn hình nhỏ thường là điện thoại)
+      const isSmall = window.matchMedia("(max-width: 420px)").matches;
+      const finalCount = isSmall ? Math.floor(count * 0.75) : count;
+
+      for (let i = 0; i < finalCount; i++){
         const c = document.createElement("div");
         const isDot = Math.random() < 0.33;
         c.className = "confetti " + (isDot ? "dot" : "paper");
@@ -211,18 +253,18 @@
         c.style.setProperty("--rot", (Math.random() * 1200 - 600) + "deg");
         c.style.background = `hsl(${Math.floor(Math.random() * 360)}, 92%, 60%)`;
 
-        const dur = 2.0 + Math.random() * 3.0;   // 2.0 - 5.0s
-        const delay = Math.random() * 0.18;      // 0 - 0.18s
+        const dur = 2.0 + Math.random() * 3.0;
+        const delay = Math.random() * 0.18;
         c.style.animationDuration = dur + "s";
         c.style.animationDelay = delay + "s";
 
         if (isDot){
-          const s = 5 + Math.random() * 9; // 5-14
+          const s = 5 + Math.random() * 9;
           c.style.width = s + "px";
           c.style.height = s + "px";
         } else {
-          const w = 6 + Math.random() * 12; // 6-18
-          const h = 10 + Math.random() * 16; // 10-26
+          const w = 6 + Math.random() * 12;
+          const h = 10 + Math.random() * 16;
           c.style.width = w + "px";
           c.style.height = h + "px";
         }
@@ -233,39 +275,39 @@
     }
 
     function bigBurst(){
-      spawnConfetti(420);
-      setTimeout(() => spawnConfetti(420), 120);
-      setTimeout(() => spawnConfetti(420), 240);
-      setTimeout(() => spawnConfetti(420), 360);
+      spawnConfetti(520);
+      setTimeout(() => spawnConfetti(520), 120);
+      setTimeout(() => spawnConfetti(520), 240);
+      setTimeout(() => spawnConfetti(520), 360);
     }
 
-    // Hiển thị ban đầu
-    showWish(nameFromURL);
+    // =========================
+    // Hành vi nút
+    // =========================
+    let pendingTimer = null;
 
-    // Bắn pháo giấy thủ công
     btnConfetti.addEventListener("click", bigBurst);
 
-    // ✅ Khi bấm “chưa đúng tên”: đổi tên -> đợi 2s -> bắn pháo hoa
-    let pendingTimer = null;
     btnWish.textContent = "Ấn nút nếu chưa đúng tên";
     btnWish.addEventListener("click", () => {
-      // đổi tên + lời chúc
-      showWish(pickRandomName());
+      // đổi sang người khác (không trùng tên hiện tại)
+      showWish(pickRandomName(currentName));
 
-      // nếu bấm liên tục thì hủy timer cũ để tránh bắn chồng loạn
+      // bấm liên tục thì hủy timer cũ
       if (pendingTimer) clearTimeout(pendingTimer);
 
-      // chờ 2 giây rồi bắn
+      // chờ 2 giây rồi bắn pháo
       pendingTimer = setTimeout(() => {
         bigBurst();
         pendingTimer = null;
       }, 2000);
     });
 
-    // Nổ nhẹ khi mở trang
-    spawnConfetti(280);
-
-    // Năm hiện tại
+    // =========================
+    // Init
+    // =========================
+    showWish(nameFromURL);
+    spawnConfetti(260);
     document.getElementById("year").textContent = new Date().getFullYear();
   </script>
 </body>
